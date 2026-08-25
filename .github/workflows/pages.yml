@@ -1,0 +1,89 @@
+name: Publicar no GitHub Pages
+
+# ============================================================
+# Este repositório é o de PUBLICAÇÃO. Ele não compila nada.
+#
+# Os artefatos (guia.pdf, apresentacao.pdf, liga.sql) chegam aqui
+# por push do workflow do repositório de código:
+#   https://github.com/ronidomingues/mysql-capacitation
+#
+# Este workflow apenas monta o site e o publica.
+#
+# PRÉ-REQUISITO neste repositório:
+#   Settings > Pages > Source = "GitHub Actions"
+# ============================================================
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      # Só republica quando o conteúdo do site muda. Alterar o README
+      # ou a documentação interna não precisa disparar um deploy.
+      - 'index.html'
+      - 'docs/**.pdf'
+      - 'materials/**'
+      - '.github/workflows/pages.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  publicar:
+    runs-on: ubuntu-latest
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # ------------------------------------------------------------
+      # Falha cedo e com mensagem clara se um artefato não chegou,
+      # em vez de publicar um site com link quebrado.
+      - name: Conferir se os artefatos chegaram
+        run: |
+          set -euo pipefail
+          faltou=0
+          for arquivo in index.html docs/guia.pdf docs/apresentacao.pdf materials/liga.sql; do
+            if [ ! -f "$arquivo" ]; then
+              echo "::error::$arquivo não existe — o repositório de código não enviou o artefato"
+              faltou=1
+            else
+              printf '✓ %-28s %s bytes\n' "$arquivo" "$(stat -c%s "$arquivo")"
+            fi
+          done
+          [ "$faltou" -eq 0 ]
+
+      # ------------------------------------------------------------
+      # Publica só o que é do site. README, LICENSE e a documentação
+      # interna ficam de fora — são para quem visita o repositório.
+      - name: Montar o site
+        run: |
+          set -euo pipefail
+          mkdir -p _site/docs _site/materials
+          cp index.html            _site/
+          cp docs/*.pdf            _site/docs/
+          cp materials/liga.sql    _site/materials/
+          echo "Conteúdo publicado:"
+          find _site -type f | sed 's/^/  /'
+
+      - name: Configurar o Pages
+        uses: actions/configure-pages@v5
+
+      - name: Enviar o artefato
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+      - name: Publicar
+        id: deployment
+        uses: actions/deploy-pages@v4
