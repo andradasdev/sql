@@ -1,0 +1,34 @@
+Creative Commons Attribution-ShareAlike 4.0 International (CC BY-SA 4.0)
+
+Copyright (c) 2026 Ronivaldo Domingues de Andrade
+
+O CONTEÚDO DIDÁTICO deste repositório — o guia (docs/), a apresentação, os
+textos, tabelas, diagramas e exercícios — está licenciado sob a
+Creative Commons Atribuição-CompartilhaIgual 4.0 Internacional.
+
+Você tem liberdade para:
+
+  COMPARTILHAR  — copiar e redistribuir o material em qualquer suporte ou formato
+  ADAPTAR       — remixar, transformar e criar a partir do material,
+                  para qualquer fim, inclusive comercial
+
+De acordo com os termos:
+
+  ATRIBUIÇÃO        — Você deve dar o crédito apropriado, prover um link para a
+                      licença e indicar se mudanças foram feitas.
+  COMPARTILHAIGUAL  — Se você remixar ou criar a partir do material, deve
+                      distribuir suas contribuições sob a mesma licença.
+
+Resumo legível: https://creativecommons.org/licenses/by-sa/4.0/deed.pt-br
+Texto legal completo: https://creativecommons.org/licenses/by-sa/4.0/legalcode.pt
+
+--------------------------------------------------------------------------
+O CÓDIGO deste repositório — compose.yml, scripts SQL, workflows do GitHub
+Actions, fontes LaTeX enquanto código — está sob a licença MIT.
+Consulte o arquivo LICENSE.
+
+As FONTES deste material (arquivos .tex, scripts e ambiente) vivem no
+repositório de código: https://github.com/ronidomingues/mysql-capacitation
+
+MATERIAL DE TERCEIROS embutido nos PDFs:
+  - Fonte Lexend: SIL Open Font License 1.1 <https://www.lexend.com/>
