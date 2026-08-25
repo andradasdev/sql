@@ -1,0 +1,23 @@
+# ==============================================================
+# .gitignore — andradasdev/sql (repositório de publicação)
+# ==============================================================
+# Este repositório guarda artefatos prontos. Os PDFs e o .sql SÃO
+# versionados de propósito: eles são o produto publicado.
+
+# Staging do GitHub Pages, montado pelo workflow a cada build
+_site/
+
+# Sistema operacional e editores
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+*.swp
+*~
+
+# Segredos, por precaução — nada aqui deveria precisar deles
+.env
+.env.*
+*.pem
+*.key
