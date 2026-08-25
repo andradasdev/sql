@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Capacitação de SQL e MySQL — andradas.dev</title>
+<meta name="description" content="Guia prático da capacitação de MySQL e SQL para a liga acadêmica: fundamentos, DDL, CRUD e relacionamentos em duas horas.">
+<style>
+  :root {
+    --roxo-escuro: #1E1647;
+    --roxo-claro:  #614AD3;
+    --borda:       #d7d7e0;
+    --fundo:       #f4f4f7;
+    --texto:       #1E1647;
+  }
+  * { box-sizing: border-box; }
+  html, body { height: 100%; margin: 0; }
+  body {
+    display: flex;
+    flex-direction: column;
+    background: var(--fundo);
+    color: var(--texto);
+    font-family: "Lexend", -apple-system, BlinkMacSystemFont, "Segoe UI",
+                 Roboto, "Helvetica Neue", Arial, sans-serif;
+  }
+  header {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .75rem 1rem;
+    align-items: center;
+    justify-content: space-between;
+    padding: .75rem 1.25rem;
+    background: var(--roxo-escuro);
+    color: #fff;
+    border-bottom: 3px solid var(--roxo-claro);
+  }
+  header h1 { margin: 0; font-size: 1rem; font-weight: 600; line-height: 1.3; }
+  header .acoes { display: flex; gap: .5rem; flex-wrap: wrap; }
+  header a {
+    display: inline-block;
+    padding: .4rem .85rem;
+    border-radius: 999px;
+    font-size: .85rem;
+    font-weight: 600;
+    text-decoration: none;
+    color: #fff;
+    border: 1px solid rgba(255,255,255,.45);
+  }
+  header a:hover, header a:focus { background: var(--roxo-claro); border-color: var(--roxo-claro); }
+  header a.primario { background: var(--roxo-claro); border-color: var(--roxo-claro); }
+
+  main { flex: 1 1 auto; min-height: 0; }
+  object, iframe { width: 100%; height: 100%; border: none; display: block; }
+
+  /* Só aparece se o navegador não conseguir embutir o PDF (iOS, alguns
+     navegadores móveis). Fica DENTRO do <object>, como conteúdo alternativo. */
+  .fallback {
+    max-width: 34rem;
+    margin: 3rem auto;
+    padding: 0 1.5rem;
+    text-align: center;
+    line-height: 1.6;
+  }
+  .fallback a { color: var(--roxo-claro); font-weight: 600; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Capacitação de SQL e MySQL</h1>
+  <nav class="acoes">
+    <a class="primario" href="./docs/guia.pdf" download>Baixar o guia</a>
+    <a href="./docs/apresentacao.pdf">Slides</a>
+    <a href="./materials/liga.sql" download>Script da aula</a>
+    <a href="https://github.com/ronidomingues/mysql-capacitation">Código-fonte</a>
+  </nav>
+</header>
+
+<main>
+  <object data="./docs/guia.pdf" type="application/pdf">
+    <div class="fallback">
+      <p>Seu navegador não consegue exibir o PDF nesta página.</p>
+      <p><a href="./docs/guia.pdf">Abrir o guia em uma nova aba</a></p>
+    </div>
+  </object>
+</main>
+
+</body>
+</html>
