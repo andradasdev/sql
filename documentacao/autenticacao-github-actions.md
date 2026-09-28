@@ -3,7 +3,7 @@
 Como autorizar o workflow de um repositório a **escrever** em outro.
 
 No nosso caso: o repositório de código
-[`ronidomingues/mysql-capacitation`](https://github.com/ronidomingues/mysql-capacitation)
+[`ronidomingues/mysql-training`](https://github.com/ronidomingues/mysql-training)
 compila os PDFs e precisa enviá-los para
 [`andradasdev/sql`](https://github.com/andradasdev/sql), que os publica.
 
@@ -16,7 +16,7 @@ prático, mas tem **duas limitações** que inviabilizam o nosso caso:
 
 | Limitação | Consequência aqui |
 |---|---|
-| Só tem permissão no **próprio repositório** onde o workflow roda | O `GITHUB_TOKEN` de `mysql-capacitation` **não escreve** em `andradasdev/sql` |
+| Só tem permissão no **próprio repositório** onde o workflow roda | O `GITHUB_TOKEN` de `mysql-training` **não escreve** em `andradasdev/sql` |
 | Pushes feitos com ele **não disparam outros workflows** | Mesmo que escrevesse, o workflow de Pages do `sql` **não seria acionado** |
 
 Essa segunda limitação existe de propósito, para evitar laços infinitos de
@@ -30,13 +30,13 @@ exatamente disso que dependemos para o Pages publicar.
 
 ```
 ┌─────────────────────────────────────┐
-│  ronidomingues/mysql-capacitation   │   repositório de CÓDIGO
+│  ronidomingues/mysql-training       │   repositório de CÓDIGO
 │                                     │
 │  Settings > Secrets and variables   │
 │    > Actions                        │
-│      PUBLISH_TOKEN  ← o valor       │
+│      SQL_ANDRADASDEV  ← o valor     │
 └──────────────┬──────────────────────┘
-               │  git push autenticado com PUBLISH_TOKEN
+               │  git push autenticado com o token
                v
 ┌─────────────────────────────────────┐
 │  andradasdev/sql                    │   repositório de PUBLICAÇÃO
@@ -125,19 +125,19 @@ conta pessoal. Você precisa ser *owner* dela.
 O token vai para o repositório **de código**, que é quem precisa dele.
 
 1. Acesse
-   <https://github.com/ronidomingues/mysql-capacitation/settings/secrets/actions>
+   <https://github.com/ronidomingues/mysql-training/settings/secrets/actions>
    (ou: repositório → **Settings** → **Secrets and variables** → **Actions**)
 
 2. **New repository secret**:
 
    | Campo | Valor |
    |---|---|
-   | **Name** | `PUBLISH_TOKEN` |
+   | **Name** | `SQL_ANDRADASDEV` |
    | **Secret** | o valor `github_pat_...` copiado no Passo 1 |
 
 3. **Add secret**.
 
-> O nome precisa ser exatamente `PUBLISH_TOKEN` — é o que o workflow procura,
+> O nome precisa ser exatamente `SQL_ANDRADASDEV` — é o que o workflow procura,
 > em `.github/workflows/build.yml`.
 >
 > Depois de salvo, o valor **não pode mais ser lido** por ninguém, nem por
@@ -154,7 +154,7 @@ O trecho relevante de `.github/workflows/build.yml`, no repositório de código:
 ```yaml
 - name: Enviar artefatos para andradasdev/sql
   env:
-    PUBLISH_TOKEN: ${{ secrets.PUBLISH_TOKEN }}
+    PUBLISH_TOKEN: ${{ secrets.SQL_ANDRADASDEV }}
   run: |
     git clone --depth 1 \
       "https://x-access-token:${PUBLISH_TOKEN}@github.com/andradasdev/sql.git" \
@@ -171,7 +171,7 @@ autenticação por token via HTTPS. O que autentica de fato é a senha — o tok
 Qualquer nome de usuário funcionaria, mas use este por convenção.
 
 **O secret entra por `env:`, nunca interpolado no corpo do script.** Escrever
-`if [ -z "${{ secrets.PUBLISH_TOKEN }}" ]` faz o valor virar parte do texto do
+`if [ -z "${{ secrets.SQL_ANDRADASDEV }}" ]` faz o valor virar parte do texto do
 comando, o que quebra com caracteres especiais e é má prática de segurança. O
 certo é declarar em `env:` e usar `${PUBLISH_TOKEN}`.
 
@@ -225,7 +225,7 @@ precisa ser refeito.
 | `remote: Permission ... denied` / `403` | Token pendente de aprovação na organização | Passo 2, fila **Pending requests** |
 | `403` com o token já aprovado | `Resource owner` ficou como a conta pessoal | Recrie o token com owner `andradasdev` |
 | `403` e o token está correto | Faltou **Contents: Read and write** | Edite as permissões do token |
-| `could not read Username for 'https://github.com'` | O secret não existe ou o nome está diferente | Confira se é exatamente `PUBLISH_TOKEN` |
+| `could not read Username for 'https://github.com'` | O secret não existe ou o nome está diferente | Confira se é exatamente `SQL_ANDRADASDEV` |
 | `Repository not found` | O token não inclui o repositório `sql` | **Repository access** → selecione `sql` |
 | Push funciona, mas o Pages não publica | Source do Pages não está em *GitHub Actions* | Passo 5 |
 | Tudo verde, site com PDF velho | O passo detectou artefatos idênticos e não commitou | Comportamento esperado |
