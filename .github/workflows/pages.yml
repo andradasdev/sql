@@ -5,7 +5,7 @@ name: Publicar no GitHub Pages
 #
 # Os artefatos (guia.pdf, apresentacao.pdf, liga.sql) chegam aqui
 # por push do workflow do repositório de código:
-#   https://github.com/ronidomingues/mysql-capacitation
+#   https://github.com/ronidomingues/mysql-training
 #
 # Este workflow apenas monta o site e o publica.
 #

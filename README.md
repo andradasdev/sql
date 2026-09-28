@@ -24,7 +24,7 @@ Aqui ficam apenas os **artefatos prontos**. Eles não são editados neste
 repositório: chegam por automação, compilados a partir das fontes LaTeX.
 
 > ### 👉 Para ver o código-fonte, ir ao repositório de código:
-> ## **[github.com/ronidomingues/mysql-capacitation](https://github.com/ronidomingues/mysql-capacitation)**
+> ## **[github.com/ronidomingues/mysql-training](https://github.com/ronidomingues/mysql-training)**
 >
 > É lá que estão as fontes `.tex` do guia e dos slides, os scripts SQL, o
 > ambiente Docker da aula e o histórico de desenvolvimento. **Correções e
@@ -34,8 +34,8 @@ repositório: chegam por automação, compilados a partir das fontes LaTeX.
 ### Como o material chega até aqui
 
 ```
-  ronidomingues/mysql-capacitation                andradasdev/sql
-  ────────────────────────────────                ───────────────
+  ronidomingues/mysql-training                    andradasdev/sql
+  ────────────────────────────                    ───────────────
    fontes .tex, .sql, Docker
             │
             │  push na main
