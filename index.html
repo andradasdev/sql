@@ -3,8 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Capacitação de SQL e MySQL — andradas.dev</title>
+<title>Capacitação de MySQL e SQL — andradas.dev</title>
 <meta name="description" content="Guia prático da capacitação de MySQL e SQL para a liga acadêmica: fundamentos, DDL, CRUD e relacionamentos em duas horas.">
+<meta name="author" content="Ronivaldo Domingues de Andrade">
+
 <!-- Prévia ao compartilhar o link (LinkedIn, WhatsApp, redes) -->
 <meta property="og:type" content="website">
 <meta property="og:title" content="Capacitação de MySQL e SQL">
@@ -14,13 +16,18 @@
 <meta property="og:image:width" content="1280">
 <meta property="og:image:height" content="640">
 <meta name="twitter:card" content="summary_large_image">
+
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2032%2032'%3E%3Crect%20width='32'%20height='32'%20rx='6'%20fill='%231E1647'/%3E%3Cpath%20d='M8%209v14c0%202.2%203.6%204%208%204s8-1.8%208-4V9'%20fill='none'%20stroke='%23fff'%20stroke-width='2'/%3E%3Cpath%20d='M8%2016c0%202.2%203.6%204%208%204s8-1.8%208-4'%20fill='none'%20stroke='%23614AD3'%20stroke-width='2'/%3E%3Cellipse%20cx='16'%20cy='9'%20rx='8'%20ry='4'%20fill='%23FFFF00'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
+  /* Paleta da for_code */
   :root {
     --roxo-escuro: #1E1647;
     --roxo-claro:  #614AD3;
-    --borda:       #d7d7e0;
+    --amarelo:     #FFFF00;
     --fundo:       #f4f4f7;
-    --texto:       #1E1647;
   }
   * { box-sizing: border-box; }
   html, body { height: 100%; margin: 0; }
@@ -28,7 +35,7 @@
     display: flex;
     flex-direction: column;
     background: var(--fundo);
-    color: var(--texto);
+    color: var(--roxo-escuro);
     font-family: "Lexend", -apple-system, BlinkMacSystemFont, "Segoe UI",
                  Roboto, "Helvetica Neue", Arial, sans-serif;
   }
@@ -42,24 +49,57 @@
     background: var(--roxo-escuro);
     color: #fff;
     border-bottom: 3px solid var(--roxo-claro);
+    position: relative;
+    z-index: 2;
   }
+  header .titulo { display: flex; flex-direction: column; gap: .1rem; }
+  header .marca { font-size: .75rem; font-weight: 700; letter-spacing: .12em; color: var(--amarelo); }
   header h1 { margin: 0; font-size: 1rem; font-weight: 600; line-height: 1.3; }
-  header .acoes { display: flex; gap: .5rem; flex-wrap: wrap; }
-  header a {
+  header .acoes { display: flex; gap: .5rem; flex-wrap: wrap; align-items: center; }
+  header a, header button, header summary {
     display: inline-block;
     padding: .4rem .85rem;
     border-radius: 999px;
+    font: inherit;
     font-size: .85rem;
     font-weight: 600;
     text-decoration: none;
     color: #fff;
+    background: transparent;
     border: 1px solid rgba(255,255,255,.45);
+    cursor: pointer;
   }
-  header a:hover, header a:focus { background: var(--roxo-claro); border-color: var(--roxo-claro); }
-  header a.primario { background: var(--roxo-claro); border-color: var(--roxo-claro); }
+  header a:hover, header a:focus-visible,
+  header button:hover, header button:focus-visible,
+  header summary:hover, header summary:focus-visible { background: var(--roxo-claro); border-color: var(--roxo-claro); }
+  header a.primario { background: var(--amarelo); border-color: var(--amarelo); color: var(--roxo-escuro); }
+  header a.primario:hover, header a.primario:focus-visible { background: #fff; border-color: #fff; }
+  header button[aria-pressed="true"] { background: rgba(255,255,255,.16); border-color: #fff; }
+
+  /* Menu de materiais: um <details> que abre uma lista sob o botão */
+  .menu { position: relative; }
+  .menu summary { list-style: none; }
+  .menu summary::-webkit-details-marker { display: none; }
+  .menu summary::after { content: " ▾"; }
+  .menu[open] summary { background: var(--roxo-claro); border-color: var(--roxo-claro); }
+  .menu .lista {
+    position: absolute;
+    right: 0;
+    top: calc(100% + .4rem);
+    display: flex;
+    flex-direction: column;
+    gap: .35rem;
+    padding: .5rem;
+    min-width: 14rem;
+    background: var(--roxo-escuro);
+    border: 1px solid var(--roxo-claro);
+    border-radius: .75rem;
+    box-shadow: 0 8px 24px rgba(0,0,0,.25);
+  }
+  .menu .lista a { border-radius: .5rem; }
 
   main { flex: 1 1 auto; min-height: 0; }
-  object, iframe { width: 100%; height: 100%; border: none; display: block; }
+  object { width: 100%; height: 100%; border: none; display: block; }
 
   /* Só aparece se o navegador não conseguir embutir o PDF (iOS, alguns
      navegadores móveis). Fica DENTRO do <object>, como conteúdo alternativo. */
@@ -76,23 +116,48 @@
 <body>
 
 <header>
-  <h1>Capacitação de SQL e MySQL</h1>
+  <div class="titulo">
+    <span class="marca">FOR_CODE · MYSQL · SQL</span>
+    <h1>Capacitação de MySQL e SQL</h1>
+  </div>
   <nav class="acoes">
     <a class="primario" href="./docs/guia.pdf" download>Baixar o guia</a>
-    <a href="./docs/apresentacao.pdf">Slides</a>
-    <a href="./materials/liga.sql" download>Script da aula</a>
+    <button type="button" data-pdf="./docs/guia.pdf" aria-pressed="true">Ver guia</button>
+    <button type="button" data-pdf="./docs/apresentacao.pdf" aria-pressed="false">Ver slides</button>
+    <a href="./materials/liga.sql" download>Script da aula (.sql)</a>
     <a href="https://github.com/ronidomingues/mysql-training">Código-fonte</a>
   </nav>
 </header>
 
-<main>
+<main id="visor">
   <object data="./docs/guia.pdf" type="application/pdf">
     <div class="fallback">
       <p>Seu navegador não consegue exibir o PDF nesta página.</p>
-      <p><a href="./docs/guia.pdf">Abrir o guia em uma nova aba</a></p>
+      <p><a href="./docs/guia.pdf">Abrir o guia</a> · <a href="./docs/apresentacao.pdf">Abrir os slides</a></p>
     </div>
   </object>
 </main>
+
+<script>
+  // Troca o PDF exibido. O <object> é recriado porque alguns navegadores
+  // ignoram a mudança do atributo "data" depois que o PDF já carregou.
+  const visor = document.getElementById('visor');
+  const botoes = document.querySelectorAll('button[data-pdf]');
+  botoes.forEach(botao => botao.addEventListener('click', () => {
+    const atual = visor.querySelector('object');
+    const novo = atual.cloneNode(true);
+    novo.data = botao.dataset.pdf;
+    atual.replaceWith(novo);
+    botoes.forEach(b => b.setAttribute('aria-pressed', String(b === botao)));
+  }));
+
+  // Fecha o menu de materiais ao clicar fora dele.
+  document.addEventListener('click', evento => {
+    document.querySelectorAll('details.menu[open]').forEach(menu => {
+      if (!menu.contains(evento.target)) menu.removeAttribute('open');
+    });
+  });
+</script>
 
 </body>
 </html>
