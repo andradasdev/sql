@@ -22,6 +22,7 @@ on:
       - 'index.html'
       - 'docs/**.pdf'
       - 'materials/**'
+      - 'assets/**'
       - '.github/workflows/pages.yml'
   workflow_dispatch:
 
@@ -69,10 +70,11 @@ jobs:
       - name: Montar o site
         run: |
           set -euo pipefail
-          mkdir -p _site/docs _site/materials
+          mkdir -p _site/docs _site/materials _site/assets
           cp index.html            _site/
           cp docs/*.pdf            _site/docs/
           cp materials/liga.sql    _site/materials/
+          cp assets/card.png       _site/assets/
           echo "Conteúdo publicado:"
           find _site -type f | sed 's/^/  /'
 
